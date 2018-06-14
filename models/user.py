@@ -3,6 +3,7 @@ from passlib.hash import pbkdf2_sha256 as sha256
 
 class User(db.Model):
     __tablename__ = 'user'
+    __bind_key__ = 'MYSQL'
 
     id = db.Column(db.Integer, primary_key = True)
     username = db.Column(db.String(120), unique = True, nullable = False)
@@ -45,6 +46,8 @@ class User(db.Model):
 
 class RevokedTokenModel(db.Model):
     __tablename__ = 'revoked_tokens'
+    __bind_key__ = 'MYSQL'
+
     id = db.Column(db.Integer, primary_key = True)
     jti = db.Column(db.String(120))
     
@@ -60,6 +63,7 @@ class RevokedTokenModel(db.Model):
 
 class ClientModel(db.Model):
     __tablename__ = 'client'
+    __bind_key__ = 'MYSQL'
 
     id = db.Column(db.Integer, primary_key = True)
     firstname = db.Column(db.String(120), nullable = False)
@@ -87,3 +91,9 @@ class ClientModel(db.Model):
         except:
             return {'message': 'Something went wrong'}
 
+
+
+
+# db.create_all(bind=['MYSQL'])
+# db.create_all(bind=['MONGO'])
+# db.session.commit()

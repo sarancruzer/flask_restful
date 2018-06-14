@@ -8,10 +8,13 @@ import resources
 from datetime import timedelta
 from flask_jwt_extended import JWTManager
 
+
+
 from shared.db import db
 import models
 from resources import userResources
 from shared.route import init_routes
+from shared.config import MYSQL
 
 
 app = Flask(__name__, static_url_path="")
@@ -19,7 +22,9 @@ api = Api(app)
 
 app.config['SECRET_KEY'] = 'thisissecret'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:root@localhost/aianr'
+app.config["SQLALCHEMY_BINDS"] = {"MYSQL": "mysql://root:root@localhost/faq", "MONGO": "mysql://root:root@localhost/aianr_new"}
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(minutes=10)
+
 
 
 @app.before_first_request
@@ -44,6 +49,7 @@ def check_if_token_in_blacklist(decrypted_token):
     
 with app.app_context():
     db.init_app(app)
+
 
 
 @app.errorhandler(400)
